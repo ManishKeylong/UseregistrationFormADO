@@ -1,0 +1,82 @@
+﻿@model IEnumerable<UseregistrationForm.Models.User>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<div class="text-end">
+    <button id="printButton" onclick="printPage()" class="btn btn-outline-primary" title="Print">
+        <i class="bi bi-printer-fill"></i>
+    </button>
+    <a href="@Url.Action("Download")" class="btn btn-outline-primary" title="Download ">
+        <i class="bi bi-file-arrow-down-fill"></i>
+    </a>
+</div>
+<div class="pb-3">
+    <a href="@Url.Action("Create")" class="btn btn-outline-primary">Create New</a>
+</div>
+
+<table id="userTable" class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.First().Username)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Email)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Password)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Username)</td>
+                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                <td>@Html.DisplayFor(modelItem => item.Password)</td>
+                <td>
+                    <a href="@Url.Action("Edit", new { id = item.Id })" title="Edit" class="btn btn-outline-success">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                    
+                    <a href="@Url.Action("Delete", new { id = item.Id })" title="Delete" class="btn btn-outline-danger">
+                        <i class="bi bi-trash3-fill"></i>
+                    </a>
+                    <a href="@Url.Action("Details", new { id = item.Id })" title="Details" class="btn btn-outline-secondary">
+                        <i class="bi bi-ticket-detailed-fill"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="pagination">
+    @if (ViewBag.CurrentPage > 1)
+    {
+        <a href="@Url.Action("Index", new { pageNumber = ViewBag.CurrentPage - 1 })" class="btn btn-outline-primary">Previous</a>
+    }
+    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+    {
+        <a href="@Url.Action("Index", new { pageNumber = i })" class="btn @(i == ViewBag.CurrentPage ? "btn-primary" : "btn-outline-primary")">@i</a>
+    }
+    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+    {
+        <a href="@Url.Action("Index", new { pageNumber = ViewBag.CurrentPage + 1 })" class="btn btn-outline-primary">Next</a>
+    }
+</div>
+<script>
+    function printPage() {
+        // Simply invoke the print function, as styles should handle visibility
+        window.print();
+    }
+</script>
+
+@*<head>
+    <style>
+    @media print {
+        #printButton,
+        .btn-outline-primary {
+            display: none;
+        }
+    }
+    </style>
+</head>*@
